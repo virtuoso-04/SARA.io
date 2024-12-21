@@ -12,23 +12,88 @@
         margin: 0;
         padding: 20px;
         font-family: 'Segoe UI', sans-serif;
+        transition: all 0.3s ease;
+    }
+    
+    body.dark-mode {
         background: var(--dark);
         color: var(--light);
     }
     
+    body.light-mode {
+        background: var(--light);
+        color: var(--dark);
+    }
+    
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    
+    .theme-switch {
+        width: 60px;
+        height: 30px;
+        background: #83d8ff;
+        border-radius: 15px;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .theme-switch.dark {
+        background: #2b4c7d;
+    }
+    
+    .theme-switch::after {
+        content: '';
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: #fff;
+        border-radius: 50%;
+        top: 3px;
+        left: 3px;
+        transition: all 0.3s ease;
+    }
+    
+    .theme-switch.dark::after {
+        transform: translateX(30px);
+    }
+    
+    .theme-switch svg {
+        width: 16px;
+        height: 16px;
+        z-index: 1;
+    }
+    
     .dashboard {
+        text-align: center;
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
     }
     
     .upload-section {
-        background: rgba(255, 255, 255, 0.1);
         border-radius: 15px;
         padding: 30px;
         text-align: center;
         margin-bottom: 30px;
         backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .dark-mode .upload-section {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .light-mode .upload-section {
+        background: rgba(0, 0, 0, 0.05);
     }
     
     .file-drop {
@@ -51,10 +116,19 @@
         padding: 15px;
         border-radius: 10px;
         border: 2px solid var(--primary);
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--light);
         font-family: inherit;
         resize: vertical;
+        transition: all 0.3s ease;
+    }
+    
+    .dark-mode .text-input {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--light);
+    }
+    
+    .light-mode .text-input {
+        background: white;
+        color: var(--dark);
     }
     
     .results-section {
@@ -64,11 +138,19 @@
     }
     
     .video-card {
-        background: rgba(255, 255, 255, 0.1);
         border-radius: 15px;
         padding: 20px;
         backdrop-filter: blur(10px);
-        transition: transform 0.3s;
+        transition: all 0.3s ease;
+    }
+    
+    .dark-mode .video-card {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .light-mode .video-card {
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
     .video-card:hover {
@@ -96,11 +178,13 @@
         display: inline-block;
         padding: 5px 10px;
         background: var(--primary);
+        color: white;
         border-radius: 15px;
         font-size: 0.9em;
         margin-top: 10px;
     }
     
+    /* Rest of your existing styles... */
     .loading {
         display: none;
         margin: 20px 0;
@@ -149,10 +233,25 @@
     }
     </style>
     </head>
-    <body>
+    <body class="dark-mode">
+    
+    <div class="theme-toggle">
+        <div class="theme-switch dark">
+            <svg class="sun" viewBox="0 0 24 24" fill="yellow">
+                <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>
+                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <svg class="moon" viewBox="0 0 24 24" fill="lightgray">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+        </div>
+    </div>
     
     <div class="dashboard">
         <h1>Learning Resource Generator</h1>
+        <div class="logo">
+            <img src="android-chrome-192x192.png">
+        </div>
         
         <div class="upload-section">
             <h2>Upload or Enter Study Material</h2>
@@ -188,8 +287,22 @@
     </div>
     
     <script>
-    // YouTube API Key - Replace with your actual API key
     const YOUTUBE_API_KEY = 'YOUR_YOUTUBE_API_KEY';
+    
+    // Add theme toggle functionality
+    const themeSwitch = document.querySelector('.theme-switch');
+    const body = document.body;
+    
+    themeSwitch.addEventListener('click', () => {
+        themeSwitch.classList.toggle('dark');
+        if (body.classList.contains('dark-mode')) {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+        } else {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+        }
+    });
     
     async function searchYouTubeVideos(query) {
         try {
@@ -201,7 +314,7 @@
                 url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
                 thumbnailUrl: item.snippet.thumbnails.high.url,
                 videoId: item.id.videoId,
-                relevance: Math.floor(Math.random() * 20) + 80 // Simulated relevance score
+                relevance: Math.floor(Math.random() * 20) + 80
             }));
         } catch (error) {
             console.error('Error fetching YouTube videos:', error);
@@ -245,7 +358,6 @@
     const fileInputSection = document.getElementById('fileInput-section');
     const textInputSection = document.getElementById('textInput-section');
     
-    // Toggle between file and text input
     fileToggle.addEventListener('click', () => {
         fileToggle.classList.add('active');
         textToggle.classList.remove('active');
@@ -260,7 +372,6 @@
         fileInputSection.style.display = 'none';
     });
     
-    // File drop handling
     fileDrop.addEventListener('dragover', (e) => {
         e.preventDefault();
         fileDrop.style.background = 'rgba(33, 150, 243, 0.1)';
@@ -288,11 +399,8 @@
     
     async function processFile(file) {
         loading.style.display = 'block';
-        
-        // Read file content
         const text = await file.text();
         const videos = await searchYouTubeVideos(text);
-        
         loading.style.display = 'none';
         displayResults(videos);
     }
