@@ -13,11 +13,43 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #040404;
+      background-color: var(--background-color, #270b0b);
+      color: var(--text-color, #ffffff);
+    }
+
+    .heading-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      max-width: 800px;
+      position: absolute;
+      top: 10px;
+    }
+
+    .heading {
+      color: var(--primary-color, #553194);
+      text-align: center;
+      flex: 1;
+    }
+
+    .theme-switcher {
+      background: var(--button-bg, #6b5acc);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: var(--button-text, #ffffff);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .theme-switcher:hover {
+      background: var(--button-hover-bg, #572bbd);
     }
 
     .dashboard {
-      background:#553911;
+      background: var(--dashboard-bg, #b36b00);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
       width: 90%;
@@ -29,7 +61,6 @@
     .dashboard h1 {
       margin-bottom: 20px;
       font-size: 24px;
-      color: #0b0b0b;
     }
 
     .input-group {
@@ -48,17 +79,17 @@
 
     .input-group button {
       padding: 10px 20px;
-      background: #6b5acc;
+      background: var(--button-bg, #6b5acc);
       border: none;
       border-radius: 5px;
-      color: #fff;
+      color: var(--button-text, #ffffff);
       font-size: 16px;
       cursor: pointer;
       transition: background 0.3s;
     }
 
     .input-group button:hover {
-      background: #572bbd;
+      background: var(--button-hover-bg, #572bbd);
     }
 
     .response-area {
@@ -66,11 +97,11 @@
     }
 
     .response-area p {
-      background: #e9ecef;
+      background: var(--response-bg, #e9ecef);
       padding: 10px;
       border-radius: 5px;
       font-size: 16px;
-      color: #333;
+      color: var(--text-color, #333);
     }
 
     .related-links ul {
@@ -83,7 +114,7 @@
     }
 
     .related-links ul li a {
-      color: #007bff;
+      color: var(--primary-color, #007bff);
       text-decoration: none;
     }
 
@@ -99,10 +130,19 @@
       .input-group button {
         width: 100%;
       }
+
+      .heading-container {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="heading-container">
+    <h1 class="heading">SARA.io</h1>
+    <button class="theme-switcher" id="theme-switcher">Switch Theme</button>
+  </div>
   <div class="dashboard">
     <h1>Enter Topic</h1>
     <div class="input-group">
@@ -121,6 +161,35 @@
     </div>
   </div>
   <script>
+    const themeSwitcher = document.getElementById('theme-switcher');
+
+    themeSwitcher.addEventListener('click', () => {
+      const root = document.documentElement;
+      const currentTheme = root.style.getPropertyValue('--background-color');
+
+      if (currentTheme === '#270b0b' || !currentTheme) {
+        root.style.setProperty('--background-color', '#ffffff');
+        root.style.setProperty('--text-color', '#000000');
+        root.style.setProperty('--primary-color', '#007bff');
+        root.style.setProperty('--button-bg', '#007bff');
+        root.style.setProperty('--button-text', '#ffffff');
+        root.style.setProperty('--button-hover-bg', '#0056b3');
+        root.style.setProperty('--dashboard-bg', '#f4f4f9');
+        root.style.setProperty('--response-bg', '#e9ecef');
+        themeSwitcher.textContent = 'Switch Theme';
+      } else {
+        root.style.setProperty('--background-color', '#270b0b');
+        root.style.setProperty('--text-color', '#ffffff');
+        root.style.setProperty('--primary-color', '#007bff');
+        root.style.setProperty('--button-bg', '#6b5acc');
+        root.style.setProperty('--button-text', '#ffffff');
+        root.style.setProperty('--button-hover-bg', '#572bbd');
+        root.style.setProperty('--dashboard-bg', '#b36b00');
+        root.style.setProperty('--response-bg', '#e9ecef');
+        themeSwitcher.textContent = 'Switch Theme';
+      }
+    });
+
     document.getElementById('submit-btn').addEventListener('click', () => {
       const topic = document.getElementById('topic-input').value;
       const aiResponseEl = document.getElementById('ai-response');
