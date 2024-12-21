@@ -21,16 +21,20 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 90%;
-      max-width: 800px;
+      width: 100%;
+      padding: 10px 20px;
+      background-color: var(--header-bg-color, #444444);
       position: absolute;
-      top: 10px;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
     }
 
     .heading {
-      color: var(--primary-color, #553194);
+      color: var(--header-text-color, #ffffff);
       text-align: center;
       flex: 1;
+      font-size: 24px;
     }
 
     .theme-switcher {
@@ -56,6 +60,7 @@
       max-width: 800px;
       padding: 20px;
       box-sizing: border-box;
+      margin-top: 60px;
     }
 
     .dashboard h1 {
@@ -176,6 +181,8 @@
         root.style.setProperty('--button-hover-bg', '#0056b3');
         root.style.setProperty('--dashboard-bg', '#f4f4f9');
         root.style.setProperty('--response-bg', '#e9ecef');
+        root.style.setProperty('--header-bg-color', '#eeeeee');
+        root.style.setProperty('--header-text-color', '#000000');
         themeSwitcher.textContent = 'Switch Theme';
       } else {
         root.style.setProperty('--background-color', '#270b0b');
@@ -186,6 +193,8 @@
         root.style.setProperty('--button-hover-bg', '#572bbd');
         root.style.setProperty('--dashboard-bg', '#b36b00');
         root.style.setProperty('--response-bg', '#e9ecef');
+        root.style.setProperty('--header-bg-color', '#444444');
+        root.style.setProperty('--header-text-color', '#ffffff');
         themeSwitcher.textContent = 'Switch Theme';
       }
     });
