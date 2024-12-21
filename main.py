@@ -2,9 +2,9 @@ import requests
 import openai
 
 # === CONFIGURATION ===
-OPENAI_API_KEY = "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"  # Replace with your OpenAI API key
-GOOGLE_API_KEY = "AIzaSyA8WnYyEq8ZRTWfUXWIlYzsyOV6CTI31iQ"  # Replace with your Google Custom Search API key
-GOOGLE_CSE_ID = "AIzaSyC5HMl5u98AuSxuFQ_BKDpCh8CSnMlxJgw"    # Replace with your Custom Search Engine ID
+OPENAI_API_KEY = "sk-proj-Tr4v5n-jSl_....."  # Replace with your OpenAI API key
+GOOGLE_API_KEY = "AIzaSyA...."  # Replace with your Google Custom Search API key
+GOOGLE_CSE_ID = "AIzaSyC...."    # Replace with your Custom Search Engine ID
 
 # Set up OpenAI API
 openai.api_key = OPENAI_API_KEY
