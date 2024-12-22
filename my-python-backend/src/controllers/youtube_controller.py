@@ -2,13 +2,10 @@ from flask import request, jsonify
 from services.youtube_service import YouTubeService
 
 class YouTubeController:
-    def __init__(self):
-        self.youtube_service = YouTubeService()
+    def __init__(self, youtube_service):
+        self.youtube_service = youtube_service
 
-    def fetch_related_videos(self):
-        query = request.args.get('query')
-        if not query:
-            return jsonify({'error': 'Query parameter is required'}), 400
-        
-        videos = self.youtube_service.get_related_videos(query)
-        return jsonify(videos)
+    def handle_request(self, request):
+        query = request.json.get('query', '')
+        videos = self.youtube_service.search_videos(query)
+        return jsonify({'videos': videos})

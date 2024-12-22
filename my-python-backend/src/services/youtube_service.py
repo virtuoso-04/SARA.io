@@ -1,14 +1,30 @@
+import requests
+
 class YouTubeService:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.base_url = "https://www.googleapis.com/youtube/v3"
 
-    def fetch_related_videos(self, video_id):
-        url = f"{self.base_url}/search?relatedToVideoId={video_id}&type=video&key={self.api_key}"
-        response = requests.get(url)
-        return response.json() if response.status_code == 200 else None
+    def search_videos(self, query):
+        try:
+            url = f"https://www.googleapis.com/youtube/v3/search"
+            params = {
+                "key": self.api_key,
+                "part": "snippet",
+                "q": query,
+                "type": "video",
+                "maxResults": 5
+            }
+            response = requests.get(url, params=params)
+            data = response.json()
 
-    def get_video_details(self, video_id):
-        url = f"{self.base_url}/videos?id={video_id}&key={self.api_key}&part=snippet,contentDetails"
-        response = requests.get(url)
-        return response.json() if response.status_code == 200 else None
+            results = []
+            for item in data.get("items", []):
+                title = item["snippet"]["title"]
+                description = item["snippet"]["description"]
+                video_id = item["id"]["videoId"]
+                link = f"https://www.youtube.com/watch?v={video_id}"
+                results.append({"title": title, "description": description, "link": link})
+
+            return results
+        except Exception as e:
+            return f"Error fetching YouTube videos: {e}"
